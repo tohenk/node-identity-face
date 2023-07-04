@@ -1,0 +1,32 @@
+{
+  "name": "@ntlab/identity-face",
+  "version": "1.0.0",
+  "description": "Face identity acquisition and identification",
+  "main": "index.js",
+  "scripts": {
+    "build:opencv": "cd node_modules/@u4/opencv4nodejs && node-gyp rebuild",
+    "build:opencv:win32": "cd node_modules/@u4/opencv4nodejs && node-gyp rebuild --arch=ia32",
+    "build:opencv:win64": "cd node_modules/@u4/opencv4nodejs && node-gyp rebuild --arch=x64"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tohenk/node-identity-face.git"
+  },
+  "keywords": [
+    "face",
+    "identify",
+    "acquisition",
+    "identification"
+  ],
+  "author": "Toha <tohenk@yahoo.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tohenk/node-identity-face/issues"
+  },
+  "homepage": "https://github.com/tohenk/node-identity-face#readme",
+  "dependencies": {
+    "@ntlab/identity": "^1.0.0",
+    "@u4/opencv4nodejs": "^6.5.2",
+    "debug": "^4.3.4"
+  }
+}
