@@ -1,2 +1,3 @@
-# node-identity-face
-Face identity acquisition and identification
+# About
+
+Perform face identity acquisition and identification using OpenCV.

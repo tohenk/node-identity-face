@@ -23,7 +23,6 @@
  */
 
 const { Identity } = require('@ntlab/identity');
-const cv = require('@u4/opencv4nodejs');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -97,6 +96,7 @@ class FaceId extends Identity {
     }
 
     normalizeImage(img) {
+        const cv = require('@u4/opencv4nodejs');
         let im = cv.imdecode(img);
         im = im.resize(80, 80);
         return cv.imencode('.jpg', im);
@@ -104,12 +104,14 @@ class FaceId extends Identity {
 
     getClassifier() {
         if (!this.classifier) {
+            const cv = require('@u4/opencv4nodejs');
             this.classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
         }
         return this.classifier;
     }
 
     detectFaces(img) {
+        const cv = require('@u4/opencv4nodejs');
         let im = cv.imdecode(img);
         im = im.bgrToGray();
         const faceRects = this.getClassifier().detectMultiScale(im).objects;
