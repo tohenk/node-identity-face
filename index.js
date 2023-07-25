@@ -50,10 +50,10 @@ class FaceId extends Identity {
             },
             [Identity.MODE_VERIFIER]: {
                 'identify': data => {
-                    return this.faceIdentify(data.feature, data.workid);
+                    return this.faceIdentify(this.normalize(data.feature), data.workid);
                 },
                 'detect': data => {
-                    return this.detectFaces(data.feature);
+                    return {face: this.detectFaces(this.normalize(data.feature))};
                 },
                 'count-template': data => {
                     return {count: this.getIdentifier().count()};
@@ -63,7 +63,7 @@ class FaceId extends Identity {
                         if (data.force && this.getIdentifier().has(data.id)) {
                             this.getIdentifier().remove(data.id);
                         }
-                        const success = this.getIdentifier().add(data.id, this.normalizeImage(data.template));
+                        const success = this.getIdentifier().add(data.id, this.normalizeImage(this.normalize(data.template)));
                         debug(`Register template ${data.id} [${success ? 'OK' : 'FAIL'}]`);
                         if (success) {
                             return {id: data.id};
@@ -93,6 +93,17 @@ class FaceId extends Identity {
                 }
             }
         }
+    }
+
+    normalize(data) {
+        if (typeof data === 'string') {
+            const buff = new Uint8Array(data.length);
+            for (let i = 0; i < data.length; i++) {
+                buff[i] = data.charCodeAt(i);
+            }
+            data = buff;
+        }
+        return data;
     }
 
     normalizeImage(img) {
