@@ -124,8 +124,15 @@ class FaceId extends Identity {
     faceIdentify(feature, workid) {
         let face = this.detectFaces(feature, false);
         if (face) {
-            return this.getIdentifier().identify(workid, face);
+            return this.getIdentifier().identify(this.fixWorkId(workid), face);
         }
+    }
+
+    fixWorkId(workid) {
+        if (!workid) {
+            workid = this.genId();
+        }
+        return workid;
     }
 
     onreset() {
