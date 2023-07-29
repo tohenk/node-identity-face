@@ -151,9 +151,10 @@ class FaceId extends Identity {
     }
 
     static fixOpenCVBinDir(rootDir, debug = false) {
+        // disable auto build
+        process.env.OPENCV4NODEJS_DISABLE_AUTOBUILD = true;
         if (process.platform === 'win32') {
-            // disable auto build and specify OpenCV bin directory
-            process.env.OPENCV4NODEJS_DISABLE_AUTOBUILD = true;
+            // specify OpenCV bin directory
             if (!process.env.OPENCV_BIN_DIR) {
                 const opencvRoot = path.join(rootDir ? rootDir : __dirname, 'opencv', os.arch() === 'ia32' ? 'x86' : 'x64');
                 if (fs.existsSync(opencvRoot)) {
