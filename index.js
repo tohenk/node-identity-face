@@ -172,15 +172,16 @@ class FaceId extends Identity {
         // disable auto build
         process.env.OPENCV4NODEJS_DISABLE_AUTOBUILD = true;
         if (process.platform === 'win32') {
+            const translatePath = path => typeof this.translatePath === 'function' ? this.translatePath(path) : path;
             // specify OpenCV bin directory
             if (!process.env.OPENCV_BIN_DIR) {
-                const opencvRoot = path.join(rootDir ? rootDir : __dirname, 'opencv', os.arch() === 'ia32' ? 'x86' : 'x64');
+                const opencvRoot = translatePath(path.join(rootDir ? rootDir : __dirname, 'opencv', os.arch() === 'ia32' ? 'x86' : 'x64'));
                 if (fs.existsSync(opencvRoot)) {
                     const dirs = fs.readdirSync(opencvRoot);
                     for (let i = 0; i < dirs.length; i++) {
                         const opencvBinDir = path.join(opencvRoot, dirs[i], 'bin');
                         if (fs.existsSync(opencvBinDir)) {
-                            process.env.OPENCV_BIN_DIR = typeof this.translatePath === 'function' ? this.translatePath(opencvBinDir) : opencvBinDir;
+                            process.env.OPENCV_BIN_DIR = opencvBinDir;
                             break;
                         }
                     }
