@@ -43,6 +43,18 @@ class FaceId extends Identity {
         }
     }
 
+    getOpenCv() {
+        if (!this.cv) {
+            try {
+                this.cv = require('@u4/opencv4nodejs');
+            }
+            catch (err) {
+                console.error(`OpenCV failed with ${err}!`);
+            }
+        }
+        return this.cv;
+    }
+
     getCommands() {
         return {
             [Identity.MODE_ALL]: {
@@ -107,28 +119,34 @@ class FaceId extends Identity {
     }
 
     normalizeImage(img) {
-        const cv = require('@u4/opencv4nodejs');
-        let im = cv.imdecode(img);
-        im = im.resize(80, 80);
-        return cv.imencode('.jpg', im);
+        const cv = this.getOpenCv();
+        if (cv) {
+            let im = cv.imdecode(img);
+            im = im.resize(80, 80);
+            return cv.imencode('.jpg', im);
+        }
     }
 
     getClassifier() {
         if (!this.classifier) {
-            const cv = require('@u4/opencv4nodejs');
-            this.classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
+            const cv = this.getOpenCv();
+            if (cv) {
+                this.classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
+            }
         }
         return this.classifier;
     }
 
     detectFaces(img) {
-        const cv = require('@u4/opencv4nodejs');
-        let im = cv.imdecode(img);
-        im = im.bgrToGray();
-        const faceRects = this.getClassifier().detectMultiScale(im).objects;
-        if (faceRects.length) {
-            const face = im.getRegion(faceRects[0]);
-            return cv.imencode('.jpg', face);
+        const cv = this.getOpenCv();
+        if (cv) {
+            let im = cv.imdecode(img);
+            im = im.bgrToGray();
+            const faceRects = this.getClassifier().detectMultiScale(im).objects;
+            if (faceRects.length) {
+                const face = im.getRegion(faceRects[0]);
+                return cv.imencode('.jpg', face);
+            }
         }
     }
 
