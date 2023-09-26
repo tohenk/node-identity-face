@@ -1,6 +1,6 @@
 {
   "name": "@ntlab/identity-face",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Face identity acquisition and identification",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/tohenk/node-identity-face#readme",
   "dependencies": {
     "@ntlab/identity": "^1.0.4",
+    "@ntlab/work": "^1.1.5",
     "@u4/opencv4nodejs": "^6.5.2",
     "debug": "^4.3.4"
   }

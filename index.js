@@ -59,6 +59,7 @@ class FaceId extends Identity {
         return {
             [Identity.MODE_ALL]: {
                 'self-test': data => this.VERSION,
+                'connect': data => this.cv ? true : false,
             },
             [Identity.MODE_VERIFIER]: {
                 'identify': data => {
@@ -121,8 +122,9 @@ class FaceId extends Identity {
     normalizeImage(img) {
         const cv = this.getOpenCv();
         if (cv) {
+            const sz = this.options.size || 80;
             let im = cv.imdecode(img);
-            im = im.resize(80, 80);
+            im = im.resize(sz, sz);
             return cv.imencode('.jpg', im);
         }
     }
