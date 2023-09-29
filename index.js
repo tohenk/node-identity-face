@@ -161,7 +161,7 @@ class FaceId extends Identity {
 
     fixWorkId(workid) {
         if (!workid) {
-            workid = this.genId();
+            workid = Identity.genId();
         }
         return workid;
     }
