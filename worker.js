@@ -50,7 +50,7 @@ function verify(work, start, end) {
         recognizer.train(images, labels);
         // predict
         log('FACE> [%d] Predicting face...', Worker.id);
-        matched = recognizer.predict(to_matrix(work.feature)).label;
+        matched = recognizer.predict(to_matrix(work.feature));
         // done
         log('FACE> [%d] Done verifying %d sample(s)', Worker.id, count);
     }

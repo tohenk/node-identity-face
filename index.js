@@ -40,6 +40,7 @@ class FaceId extends Identity {
         this.workerOptions = {
             worker: path.join(__dirname, 'worker'),
             maxWorks: 200,
+            hasConfidence: true,
         }
     }
 
