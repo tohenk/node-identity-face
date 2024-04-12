@@ -134,7 +134,8 @@ class FaceId extends Identity {
         if (!this.classifier) {
             const cv = this.getOpenCv();
             if (cv) {
-                this.classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
+                const classifierModel = this.constructor.translatePath(cv.HAAR_FRONTALFACE_ALT2);
+                this.classifier = new cv.CascadeClassifier(classifierModel);
             }
         }
         return this.classifier;
@@ -175,10 +176,9 @@ class FaceId extends Identity {
         // disable auto build
         process.env.OPENCV4NODEJS_DISABLE_AUTOBUILD = true;
         if (process.platform === 'win32') {
-            const translatePath = path => typeof this.translatePath === 'function' ? this.translatePath(path) : path;
             // specify OpenCV bin directory
             if (!process.env.OPENCV_BIN_DIR) {
-                const opencvRoot = translatePath(path.join(rootDir ? rootDir : __dirname, 'opencv', os.arch() === 'ia32' ? 'x86' : 'x64'));
+                const opencvRoot = this.translatePath(path.join(rootDir ? rootDir : __dirname, 'opencv', os.arch() === 'ia32' ? 'x86' : 'x64'));
                 if (fs.existsSync(opencvRoot)) {
                     const dirs = fs.readdirSync(opencvRoot);
                     for (let i = 0; i < dirs.length; i++) {
@@ -199,8 +199,12 @@ class FaceId extends Identity {
         }
     }
 
+    static translatePath(path) {
+        return typeof this._translatePath === 'function' ? this._translatePath(path) : path;
+    }
+
     static setPathTranslator(fn) {
-        this.translatePath = fn;
+        this._translatePath = fn;
     }
 }
 
